@@ -109,4 +109,27 @@ public class MachineACaféTest
         var sommeFinale = machine.SommeEncaisséeEnCentimes;
         Assert.Equal(sommeInitiale, sommeFinale);
     }
+
+    [Fact(DisplayName = "Quand il n'y a plus de gobelets, l'argent est rendu.")]
+    public void AbsenceCafé()
+    {
+        // ETANT DONNE une machine n'ayant pas de café
+        // ET une pièce d'une valeur suffisante
+        var pièce = Pièce.CinquanteCentimes;
+        var hardware = new FakeHardware(0, 1, true);
+        var machine = new MachineACafé(hardware);
+        var nombreCafésServisInitiaux = machine.NombreCafésServis;
+        var sommeInitiale = machine.SommeEncaisséeEnCentimes;
+
+        // QUAND la pièce est insérée
+        hardware.SimulateInsertMoney(pièce);
+
+        // ALORS le compteur de cafés servis reste identique
+        var nombreCafésServisFinaux = machine.NombreCafésServis;
+        Assert.Equal(nombreCafésServisInitiaux, nombreCafésServisFinaux);
+
+        // ET la somme encaissée de même
+        var sommeFinale = machine.SommeEncaisséeEnCentimes;
+        Assert.Equal(sommeInitiale, sommeFinale);
+    }
 }
