@@ -32,15 +32,13 @@ public class MachineACaféTest
         var sommeInitiale = machine.SommeEncaisséeEnCentimes;
 
         // QUAND la pièce est insérée
-        hardware.SimulateInsertMoney(pièce);
+        hardware.SimulerInsertionPièce(pièce);
 
         // ALORS le compteur de cafés servis s'incrémente
-        var nombreCafésServisFinaux = machine.NombreCafésServis;
-        Assert.Equal(nombreCafésServisInitiaux + 1, nombreCafésServisFinaux);
+        Assert.UnCaféEstServi(machine, nombreCafésServisInitiaux);
 
         // ET la valeur de la pièce est encaissée
-        var sommeFinale = machine.SommeEncaisséeEnCentimes;
-        Assert.Equal(sommeInitiale + pièce.ValeurEnCentimes, sommeFinale);
+        Assert.LeMontantEstEncaissé(machine, sommeInitiale, pièce);
     }
 
     [Theory(DisplayName = "Quand on met une somme insuffisante, l'argent est rendu.")]
@@ -54,92 +52,40 @@ public class MachineACaféTest
         var sommeInitiale = machine.SommeEncaisséeEnCentimes;
 
         // QUAND la pièce est insérée
-        hardware.SimulateInsertMoney(pièce);
+        hardware.SimulerInsertionPièce(pièce);
 
         // ALORS le compteur de cafés servis reste identique
-        var nombreCafésServisFinaux = machine.NombreCafésServis;
-        Assert.Equal(nombreCafésServisInitiaux, nombreCafésServisFinaux);
+        Assert.AucunCaféNEstServi(machine, nombreCafésServisInitiaux);
 
         // ET la somme encaissée de même
-        var sommeFinale = machine.SommeEncaisséeEnCentimes;
-        Assert.Equal(sommeInitiale, sommeFinale);
+        Assert.AucunArgentNEstEncaissé(machine, sommeInitiale);
     }
 
-    [Fact(DisplayName = "Quand il n'y a pas d'eau, l'argent est rendu.")]
-    public void AbsenceEau()
+    [Theory(DisplayName = "Quand une ressource manque, l'argent est rendu.")]
+    [InlineData(FakeHardwareBuilder.Ressources.Café)]
+    [InlineData(FakeHardwareBuilder.Ressources.Eau)]
+    [InlineData(FakeHardwareBuilder.Ressources.Gobelet)]
+    public void AbsenceRessource(FakeHardwareBuilder.Ressources ressourceManquante)
     {
-        // ETANT DONNE une machine n'ayant pas d'eau
-        // ET une pièce d'une valeur suffisante
-        var pièce = Pièce.CinquanteCentimes;
-
-        var hardware = new FakeHardwareBuilder().NAyantPasDEau().Build();
-        var machine = MachineACaféBuilder.AvecHardware(hardware);
-
-        var nombreCafésServisInitiaux = machine.NombreCafésServis;
-        var sommeInitiale = machine.SommeEncaisséeEnCentimes;
-
-        // QUAND la pièce est insérée
-        hardware.SimulateInsertMoney(pièce);
-
-        // ALORS le compteur de cafés servis reste identique
-        var nombreCafésServisFinaux = machine.NombreCafésServis;
-        Assert.Equal(nombreCafésServisInitiaux, nombreCafésServisFinaux);
-
-        // ET la somme encaissée de même
-        var sommeFinale = machine.SommeEncaisséeEnCentimes;
-        Assert.Equal(sommeInitiale, sommeFinale);
-    }
-
-    [Fact(DisplayName = "Quand il n'y a plus de gobelets, l'argent est rendu.")]
-    public void AbsenceGobelets()
-    {
-        // ETANT DONNE une machine n'ayant pas de gobelets
+        // ETANT DONNE une machine manquant d'une ressource
         // ET une pièce d'une valeur suffisante
         var pièce = Pièce.CinquanteCentimes;
 
         var hardware = new FakeHardwareBuilder()
-            .NAyantPasDeGobelets()
+            .AyantUneRessourceManquante(ressourceManquante)
             .Build();
-
         var machine = MachineACaféBuilder.AvecHardware(hardware);
 
         var nombreCafésServisInitiaux = machine.NombreCafésServis;
         var sommeInitiale = machine.SommeEncaisséeEnCentimes;
 
         // QUAND la pièce est insérée
-        hardware.SimulateInsertMoney(pièce);
+        hardware.SimulerInsertionPièce(pièce);
 
         // ALORS le compteur de cafés servis reste identique
-        var nombreCafésServisFinaux = machine.NombreCafésServis;
-        Assert.Equal(nombreCafésServisInitiaux, nombreCafésServisFinaux);
+        Assert.AucunCaféNEstServi(machine, nombreCafésServisInitiaux);
 
         // ET la somme encaissée de même
-        var sommeFinale = machine.SommeEncaisséeEnCentimes;
-        Assert.Equal(sommeInitiale, sommeFinale);
-    }
-
-    [Fact(DisplayName = "Quand il n'y a plus de café, l'argent est rendu.")]
-    public void AbsenceCafé()
-    {
-        // ETANT DONNE une machine n'ayant pas de café
-        // ET une pièce d'une valeur suffisante
-        var pièce = Pièce.CinquanteCentimes;
-
-        var hardware = new FakeHardwareBuilder().NAyantPasDeCafé().Build();
-        var machine = MachineACaféBuilder.AvecHardware(hardware);
-
-        var nombreCafésServisInitiaux = machine.NombreCafésServis;
-        var sommeInitiale = machine.SommeEncaisséeEnCentimes;
-
-        // QUAND la pièce est insérée
-        hardware.SimulateInsertMoney(pièce);
-
-        // ALORS le compteur de cafés servis reste identique
-        var nombreCafésServisFinaux = machine.NombreCafésServis;
-        Assert.Equal(nombreCafésServisInitiaux, nombreCafésServisFinaux);
-
-        // ET la somme encaissée de même
-        var sommeFinale = machine.SommeEncaisséeEnCentimes;
-        Assert.Equal(sommeInitiale, sommeFinale);
+        Assert.AucunArgentNEstEncaissé(machine, sommeInitiale);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace MachineACafe.Test.Utilities;
 
-internal class FakeHardware : IMachineHardware
+public class FakeHardware : IMachineHardware
 {
     private ushort _stockOfCoffee;
     private ushort _stockOfCups;
@@ -16,7 +16,7 @@ internal class FakeHardware : IMachineHardware
         HasAtLeastOneVolumeOfWater = hasWater;
     }
 
-    public void SimulateInsertMoney(Pièce pièce)
+    public void SimulerInsertionPièce(Pièce pièce)
     {
         _onMoneyInserted(pièce);
     }

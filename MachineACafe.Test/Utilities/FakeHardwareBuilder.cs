@@ -1,6 +1,6 @@
 ﻿namespace MachineACafe.Test.Utilities;
 
-internal class FakeHardwareBuilder
+public class FakeHardwareBuilder
 {
     public static FakeHardware Default => new FakeHardwareBuilder().Build();
 
@@ -31,5 +31,21 @@ internal class FakeHardwareBuilder
     {
         _hasCups = false;
         return this;
+    }
+
+    public FakeHardwareBuilder AyantUneRessourceManquante(Ressources ressource)
+        => ressource switch
+           {
+               Ressources.Eau     => NAyantPasDEau(),
+               Ressources.Gobelet => NAyantPasDeGobelets(),
+               Ressources.Café    => NAyantPasDeCafé(),
+               _                  => throw new ArgumentOutOfRangeException(nameof(ressource), ressource, null)
+           };
+
+    public enum Ressources
+    {
+        Eau,
+        Gobelet,
+        Café
     }
 }
