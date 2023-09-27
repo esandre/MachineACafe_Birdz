@@ -63,4 +63,27 @@ public class MachineACaféTest
         var sommeFinale = machine.SommeEncaisséeEnCentimes;
         Assert.Equal(sommeInitiale, sommeFinale);
     }
+
+    [Fact(DisplayName = "Quand on met une somme insuffisante, l'argent est rendu.")]
+    public void AbsenceEau()
+    {
+        // ETANT DONNE une machine n'ayant pas d'eau
+        // ET une pièce d'une valeur suffisante
+        var pièce = Pièce.CinquanteCentimes;
+        var hardware = new FakeHardware(1, 1, false);
+        var machine = new MachineACafé(hardware);
+        var nombreCafésServisInitiaux = machine.NombreCafésServis;
+        var sommeInitiale = machine.SommeEncaisséeEnCentimes;
+
+        // QUAND la pièce est insérée
+        hardware.SimulateInsertMoney(pièce);
+
+        // ALORS le compteur de cafés servis reste identique
+        var nombreCafésServisFinaux = machine.NombreCafésServis;
+        Assert.Equal(nombreCafésServisInitiaux, nombreCafésServisFinaux);
+
+        // ET la somme encaissée de même
+        var sommeFinale = machine.SommeEncaisséeEnCentimes;
+        Assert.Equal(sommeInitiale, sommeFinale);
+    }
 }

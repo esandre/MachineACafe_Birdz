@@ -4,8 +4,11 @@ namespace MachineACafe;
 
 public class MachineACafé
 {
+    private readonly IMachineHardware _hardware;
+
     public MachineACafé(IMachineHardware hardware)
     {
+        _hardware = hardware;
         hardware.RegisterMoneyInsertedCallback(Insérer);
     }
 
@@ -14,7 +17,8 @@ public class MachineACafé
 
     private void Insérer(Pièce pièce)
     {
-        if(pièce < Pièce.CinquanteCentimes) return;
+        if (pièce < Pièce.CinquanteCentimes) return;
+        if (!_hardware.HasAtLeastOneVolumeOfWater) return;
 
         NombreCafésServis++;
         SommeEncaisséeEnCentimes += pièce.ValeurEnCentimes;
