@@ -28,17 +28,14 @@ public class MachineACaféTest
         var hardware = FakeHardwareBuilder.Default;
         var machine = MachineACaféBuilder.AvecHardware(hardware);
 
-        var nombreCafésServisInitiaux = machine.NombreCafésServis;
-        var sommeInitiale = machine.SommeEncaisséeEnCentimes;
-
         // QUAND la pièce est insérée
         hardware.SimulerInsertionPièce(pièce);
 
         // ALORS le compteur de cafés servis s'incrémente
-        Assert.UnCaféEstServi(machine, nombreCafésServisInitiaux);
+        Assert.UnCaféEstServi(machine);
 
         // ET la valeur de la pièce est encaissée
-        Assert.LeMontantEstEncaissé(machine, sommeInitiale, pièce);
+        Assert.LeMontantEstEncaissé(machine, pièce);
     }
 
     [Theory(DisplayName = "Quand on met une somme insuffisante, l'argent est rendu.")]
@@ -48,17 +45,15 @@ public class MachineACaféTest
         // ETANT DONNE une pièce d'une valeur inférieure à 40cts
         var hardware = FakeHardwareBuilder.Default;
         var machine = MachineACaféBuilder.AvecHardware(hardware);
-        var nombreCafésServisInitiaux = machine.NombreCafésServis;
-        var sommeInitiale = machine.SommeEncaisséeEnCentimes;
 
         // QUAND la pièce est insérée
         hardware.SimulerInsertionPièce(pièce);
 
         // ALORS le compteur de cafés servis reste identique
-        Assert.AucunCaféNEstServi(machine, nombreCafésServisInitiaux);
+        Assert.AucunCaféNEstServi(machine);
 
         // ET la somme encaissée de même
-        Assert.AucunArgentNEstEncaissé(machine, sommeInitiale);
+        Assert.AucunArgentNEstEncaissé(machine);
     }
 
     [Theory(DisplayName = "Quand une ressource manque, l'argent est rendu.")]
@@ -76,16 +71,13 @@ public class MachineACaféTest
             .Build();
         var machine = MachineACaféBuilder.AvecHardware(hardware);
 
-        var nombreCafésServisInitiaux = machine.NombreCafésServis;
-        var sommeInitiale = machine.SommeEncaisséeEnCentimes;
-
         // QUAND la pièce est insérée
         hardware.SimulerInsertionPièce(pièce);
 
         // ALORS le compteur de cafés servis reste identique
-        Assert.AucunCaféNEstServi(machine, nombreCafésServisInitiaux);
+        Assert.AucunCaféNEstServi(machine);
 
         // ET la somme encaissée de même
-        Assert.AucunArgentNEstEncaissé(machine, sommeInitiale);
+        Assert.AucunArgentNEstEncaissé(machine);
     }
 }

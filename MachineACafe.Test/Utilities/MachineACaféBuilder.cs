@@ -6,7 +6,7 @@ internal class MachineACaféBuilder
 {
     private IMachineHardware _hardware = FakeHardwareBuilder.Default;
 
-    public static MachineACafé AvecHardware(IMachineHardware hardware)
+    public static MachineACaféHarness AvecHardware(IMachineHardware hardware)
         => new MachineACaféBuilder().AyantPourHardware(hardware).Build();
 
     public MachineACaféBuilder AyantPourHardware(IMachineHardware hardware)
@@ -15,8 +15,8 @@ internal class MachineACaféBuilder
         return this;
     }
 
-    public MachineACafé Build()
+    public MachineACaféHarness Build()
     {
-        return new MachineACafé(_hardware);
+        return new MachineACaféHarness(new MachineACafé(_hardware));
     }
 }

@@ -2,7 +2,7 @@
 
 namespace MachineACafe;
 
-public class MachineACafé
+public class MachineACafé : IMachineACafé
 {
     private readonly IMachineHardware _hardware;
 
