@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MachineACafe\MachineACafe.csproj" />
+  </ItemGroup>
+
 </Project>
