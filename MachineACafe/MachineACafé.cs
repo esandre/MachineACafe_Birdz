@@ -19,6 +19,7 @@ public class MachineACafé
     {
         if (pièce < Pièce.CinquanteCentimes) return;
         if (!_hardware.HasAtLeastOneVolumeOfWater) return;
+        if (!_hardware.HasAtLeastOneCup) return;
 
         NombreCafésServis++;
         SommeEncaisséeEnCentimes += pièce.ValeurEnCentimes;
