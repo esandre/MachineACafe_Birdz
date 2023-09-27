@@ -11,6 +11,15 @@ public class MachineACaféTest
         new[] { Pièce.DeuxEuros }
     };
 
+    public static IEnumerable<object[]> CasPasAssezArgent => new[]
+    {
+        new[] { Pièce.VingtCentimes },
+        new[] { Pièce.DixCentimes },
+        new[] { Pièce.CinqCentimes },
+        new[] { Pièce.DeuxCentimes },
+        new[] { Pièce.UnCentime }
+    };
+
     [Theory(DisplayName = "Quand on met la bonne somme, le café coule.")]
     [MemberData(nameof(CasCasNominal))]
     public void CasNominal(Pièce pièce)
@@ -31,5 +40,27 @@ public class MachineACaféTest
         // ET la valeur de la pièce est encaissée
         var sommeFinale = machine.SommeEncaisséeEnCentimes;
         Assert.Equal(sommeInitiale + pièce.ValeurEnCentimes, sommeFinale);
+    }
+
+    [Theory(DisplayName = "Quand on met une somme insuffisante, l'argent est rendu.")]
+    [MemberData(nameof(CasPasAssezArgent))]
+    public void PasAssezArgent(Pièce pièce)
+    {
+        // ETANT DONNE une pièce d'une valeur inférieure à 40cts
+        var hardware = new FakeHardware(1, 1, true);
+        var machine = new MachineACafé(hardware);
+        var nombreCafésServisInitiaux = machine.NombreCafésServis;
+        var sommeInitiale = machine.SommeEncaisséeEnCentimes;
+
+        // QUAND la pièce est insérée
+        hardware.SimulateInsertMoney(pièce);
+
+        // ALORS le compteur de cafés servis reste identique
+        var nombreCafésServisFinaux = machine.NombreCafésServis;
+        Assert.Equal(nombreCafésServisInitiaux, nombreCafésServisFinaux);
+
+        // ET la somme encaissée de même
+        var sommeFinale = machine.SommeEncaisséeEnCentimes;
+        Assert.Equal(sommeInitiale, sommeFinale);
     }
 }

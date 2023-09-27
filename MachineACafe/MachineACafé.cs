@@ -14,6 +14,8 @@ public class MachineACafé
 
     private void Insérer(Pièce pièce)
     {
+        if(pièce < Pièce.CinquanteCentimes) return;
+
         NombreCafésServis++;
         SommeEncaisséeEnCentimes += pièce.ValeurEnCentimes;
     }
