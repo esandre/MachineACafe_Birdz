@@ -16,12 +16,13 @@ public class MachineACaféTest
     public void CasNominal(Pièce pièce)
     {
         // ETANT DONNE une pièce d'une valeur supérieure ou égale à 40cts
-        var machine = new MachineACafé(new StubHardware());
+        var hardware = new FakeHardware(1, 1, true);
+        var machine = new MachineACafé(hardware);
         var nombreCafésServisInitiaux = machine.NombreCafésServis;
         var sommeInitiale = machine.SommeEncaisséeEnCentimes;
 
         // QUAND la pièce est insérée
-        machine.Insérer(pièce);
+        hardware.SimulateInsertMoney(pièce);
 
         // ALORS le compteur de cafés servis s'incrémente
         var nombreCafésServisFinaux = machine.NombreCafésServis;

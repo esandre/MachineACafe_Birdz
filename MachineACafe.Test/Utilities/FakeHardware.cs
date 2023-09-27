@@ -16,7 +16,7 @@ internal class FakeHardware : IMachineHardware
         HasAtLeastOneVolumeOfWater = hasWater;
     }
 
-    public void InsertMoney(Pièce pièce)
+    public void SimulateInsertMoney(Pièce pièce)
     {
         _onMoneyInserted(pièce);
     }
