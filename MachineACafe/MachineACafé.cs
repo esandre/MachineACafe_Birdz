@@ -1,12 +1,27 @@
-﻿namespace MachineACafe;
+﻿using MachineACafe.Ports;
+
+namespace MachineACafe;
 
 public class MachineACafé
 {
+    private readonly IMachineHardware _hardware;
+
+    public MachineACafé(IMachineHardware hardware)
+    {
+        _hardware = hardware;
+        hardware.RegisterMoneyInsertedCallback(Insérer);
+    }
+
     public uint NombreCafésServis { get; private set; }
     public uint SommeEncaisséeEnCentimes { get; private set; }
 
-    public void Insérer(Pièce pièce)
+    private void Insérer(Pièce pièce)
     {
+        if (pièce < Pièce.CinquanteCentimes) return;
+        if (!_hardware.HasAtLeastOneVolumeOfWater) return;
+        if (!_hardware.HasAtLeastOneCup) return;
+        if (!_hardware.HasAtLeastOneMeasureOfCoffee) return;
+
         NombreCafésServis++;
         SommeEncaisséeEnCentimes += pièce.ValeurEnCentimes;
     }
