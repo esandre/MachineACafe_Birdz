@@ -25,8 +25,9 @@ public class MachineACaféTest
     public void CasNominal(Pièce pièce)
     {
         // ETANT DONNE une pièce d'une valeur supérieure ou égale à 40cts
-        var hardware = new FakeHardware(1, 1, true);
-        var machine = new MachineACafé(hardware);
+        var hardware = FakeHardwareBuilder.Default;
+        var machine = MachineACaféBuilder.AvecHardware(hardware);
+
         var nombreCafésServisInitiaux = machine.NombreCafésServis;
         var sommeInitiale = machine.SommeEncaisséeEnCentimes;
 
@@ -47,8 +48,8 @@ public class MachineACaféTest
     public void PasAssezArgent(Pièce pièce)
     {
         // ETANT DONNE une pièce d'une valeur inférieure à 40cts
-        var hardware = new FakeHardware(1, 1, true);
-        var machine = new MachineACafé(hardware);
+        var hardware = FakeHardwareBuilder.Default;
+        var machine = MachineACaféBuilder.AvecHardware(hardware);
         var nombreCafésServisInitiaux = machine.NombreCafésServis;
         var sommeInitiale = machine.SommeEncaisséeEnCentimes;
 
@@ -70,8 +71,10 @@ public class MachineACaféTest
         // ETANT DONNE une machine n'ayant pas d'eau
         // ET une pièce d'une valeur suffisante
         var pièce = Pièce.CinquanteCentimes;
-        var hardware = new FakeHardware(1, 1, false);
-        var machine = new MachineACafé(hardware);
+
+        var hardware = new FakeHardwareBuilder().NAyantPasDEau().Build();
+        var machine = MachineACaféBuilder.AvecHardware(hardware);
+
         var nombreCafésServisInitiaux = machine.NombreCafésServis;
         var sommeInitiale = machine.SommeEncaisséeEnCentimes;
 
@@ -93,8 +96,13 @@ public class MachineACaféTest
         // ETANT DONNE une machine n'ayant pas de gobelets
         // ET une pièce d'une valeur suffisante
         var pièce = Pièce.CinquanteCentimes;
-        var hardware = new FakeHardware(1, 0, true);
-        var machine = new MachineACafé(hardware);
+
+        var hardware = new FakeHardwareBuilder()
+            .NAyantPasDeGobelets()
+            .Build();
+
+        var machine = MachineACaféBuilder.AvecHardware(hardware);
+
         var nombreCafésServisInitiaux = machine.NombreCafésServis;
         var sommeInitiale = machine.SommeEncaisséeEnCentimes;
 
@@ -110,14 +118,16 @@ public class MachineACaféTest
         Assert.Equal(sommeInitiale, sommeFinale);
     }
 
-    [Fact(DisplayName = "Quand il n'y a plus de gobelets, l'argent est rendu.")]
+    [Fact(DisplayName = "Quand il n'y a plus de café, l'argent est rendu.")]
     public void AbsenceCafé()
     {
         // ETANT DONNE une machine n'ayant pas de café
         // ET une pièce d'une valeur suffisante
         var pièce = Pièce.CinquanteCentimes;
-        var hardware = new FakeHardware(0, 1, true);
-        var machine = new MachineACafé(hardware);
+
+        var hardware = new FakeHardwareBuilder().NAyantPasDeCafé().Build();
+        var machine = MachineACaféBuilder.AvecHardware(hardware);
+
         var nombreCafésServisInitiaux = machine.NombreCafésServis;
         var sommeInitiale = machine.SommeEncaisséeEnCentimes;
 
