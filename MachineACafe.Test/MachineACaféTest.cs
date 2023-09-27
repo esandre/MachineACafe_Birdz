@@ -25,11 +25,10 @@ public class MachineACaféTest
     public void CasNominal(Pièce pièce)
     {
         // ETANT DONNE une pièce d'une valeur supérieure ou égale à 40cts
-        var hardware = FakeHardwareBuilder.Default;
-        var machine = MachineACaféBuilder.AvecHardware(hardware);
+        var machine = MachineACaféBuilder.Default;
 
         // QUAND la pièce est insérée
-        hardware.SimulerInsertionPièce(pièce);
+        machine.SimulerInsertionPièce(pièce);
 
         // ALORS le compteur de cafés servis s'incrémente
         Assert.UnCaféEstServi(machine);
@@ -43,11 +42,10 @@ public class MachineACaféTest
     public void PasAssezArgent(Pièce pièce)
     {
         // ETANT DONNE une pièce d'une valeur inférieure à 40cts
-        var hardware = FakeHardwareBuilder.Default;
-        var machine = MachineACaféBuilder.AvecHardware(hardware);
+        var machine = MachineACaféBuilder.Default;
 
         // QUAND la pièce est insérée
-        hardware.SimulerInsertionPièce(pièce);
+        machine.SimulerInsertionPièce(pièce);
 
         // ALORS le compteur de cafés servis reste identique
         Assert.AucunCaféNEstServi(machine);
@@ -57,22 +55,21 @@ public class MachineACaféTest
     }
 
     [Theory(DisplayName = "Quand une ressource manque, l'argent est rendu.")]
-    [InlineData(FakeHardwareBuilder.Ressources.Café)]
-    [InlineData(FakeHardwareBuilder.Ressources.Eau)]
-    [InlineData(FakeHardwareBuilder.Ressources.Gobelet)]
-    public void AbsenceRessource(FakeHardwareBuilder.Ressources ressourceManquante)
+    [InlineData(MachineACaféBuilder.Ressources.Café)]
+    [InlineData(MachineACaféBuilder.Ressources.Eau)]
+    [InlineData(MachineACaféBuilder.Ressources.Gobelet)]
+    public void AbsenceRessource(MachineACaféBuilder.Ressources ressourceManquante)
     {
         // ETANT DONNE une machine manquant d'une ressource
         // ET une pièce d'une valeur suffisante
         var pièce = Pièce.CinquanteCentimes;
 
-        var hardware = new FakeHardwareBuilder()
+        var machine = new MachineACaféBuilder()
             .AyantUneRessourceManquante(ressourceManquante)
             .Build();
-        var machine = MachineACaféBuilder.AvecHardware(hardware);
 
         // QUAND la pièce est insérée
-        hardware.SimulerInsertionPièce(pièce);
+        machine.SimulerInsertionPièce(pièce);
 
         // ALORS le compteur de cafés servis reste identique
         Assert.AucunCaféNEstServi(machine);
