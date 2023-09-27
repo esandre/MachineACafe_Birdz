@@ -1,3 +1,5 @@
+using MachineACafe.Test.Utilities;
+
 namespace MachineACafe.Test;
 
 public class MachineACaféTest
@@ -14,7 +16,7 @@ public class MachineACaféTest
     public void CasNominal(Pièce pièce)
     {
         // ETANT DONNE une pièce d'une valeur supérieure ou égale à 40cts
-        var machine = new MachineACafé();
+        var machine = new MachineACafé(new StubHardware());
         var nombreCafésServisInitiaux = machine.NombreCafésServis;
         var sommeInitiale = machine.SommeEncaisséeEnCentimes;
 
