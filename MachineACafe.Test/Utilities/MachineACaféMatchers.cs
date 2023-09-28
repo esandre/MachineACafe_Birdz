@@ -12,6 +12,11 @@ public partial class Assert
         Equal(1U, machine.DeltaCafésServis);
     }
 
+    public static void DeuxCafesSontServis(MachineACaféHarness machine)
+    {
+        Equal(2U, machine.DeltaCafésServis);
+    }
+
     public static void AucunCaféNEstServi(MachineACaféHarness machine)
     {
         Equal(0U, machine.DeltaCafésServis);

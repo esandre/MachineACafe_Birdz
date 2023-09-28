@@ -152,4 +152,28 @@ public class MachineACaféTest
         // ET une dose d'eau n'est pas demandé car plus d'eau
         Assert.False(hardwareSpy.AddOneDoseOfWaterHasBeenCalled);
     }
+
+
+    [Fact(DisplayName = "Quand un café long est demandé le button se reset")]
+    public void DemandeDeCafeLongResetLEtatDuBoutton()
+    {
+        // ETANT DONNE une pièce d'une valeur supérieure à 40cts
+        var pièce = MachineACafé.SommeMinimale;
+
+        // ET une machine dont le bouton "allongé" est appuyé
+        var spiedHardware = new FakeHardwareBuilder().Build();
+        var hardwareSpy = new SpyHardware(spiedHardware);
+        var machine = MachineACaféBuilder.AvecHardware(hardwareSpy);
+        spiedHardware.SimulerAppuiBoutonAllongé();
+
+        // QUAND deux pièces sont insérées de suite
+        spiedHardware.SimulerInsertionPièce(pièce);
+        spiedHardware.SimulerInsertionPièce(pièce);
+
+        // ALORS le compteur de cafés servis s'incrémente de 2
+        Assert.DeuxCafesSontServis(machine);
+
+        // ET trois doses d'eau sont consommées
+        Assert.Equal(3U, hardwareSpy.DosesDEauConsommées);
+    }
 }

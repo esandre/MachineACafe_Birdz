@@ -5,6 +5,7 @@ namespace MachineACafe.Test.Utilities;
 internal class SpyHardware : IMachineHardware
 {
     private readonly IMachineHardware _spied;
+    public uint DosesDEauConsommées { get; private set; }
 
     public SpyHardware(IMachineHardware spied)
     {
@@ -26,6 +27,7 @@ internal class SpyHardware : IMachineHardware
     /// <inheritdoc />
     public void MakeOneCoffee()
     {
+        DosesDEauConsommées++;
         MakeOneCoffeeHasBeenCalled = true;
         _spied.MakeOneCoffee();
     }
@@ -33,6 +35,7 @@ internal class SpyHardware : IMachineHardware
     /// <inheritdoc />
     public void AddOneDoseOfWater()
     {
+        DosesDEauConsommées++;
         AddOneDoseOfWaterHasBeenCalled = true;
         _spied.AddOneDoseOfWater();
     }

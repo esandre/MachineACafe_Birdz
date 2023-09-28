@@ -40,5 +40,7 @@ public class MachineACafé : IMachineACafé
 
         if(CaféAllongéDemandé && _hardware.HasAtLeastOneVolumeOfWater)
             _hardware.AddOneDoseOfWater();
+
+        CaféAllongéDemandé = false;
     }
 }

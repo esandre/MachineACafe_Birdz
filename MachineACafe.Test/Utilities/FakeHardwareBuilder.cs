@@ -4,7 +4,7 @@ public class FakeHardwareBuilder
 {
     public static FakeHardware Default => new FakeHardwareBuilder().Build();
 
-    private ushort _limiteEnEau = 2;
+    private ushort _limiteEnEau = 3;
     private bool _hasCoffee = true;
     private bool _hasCups = true;
 
@@ -13,8 +13,8 @@ public class FakeHardwareBuilder
 
     public FakeHardware Build()
     {
-        var dosesCafé = (ushort) (_hasCoffee ? 1 : 0);
-        var nombreGobelets = (ushort) (_hasCups ? 1 : 0);
+        var dosesCafé = (ushort) (_hasCoffee ? 2 : 0);
+        var nombreGobelets = (ushort) (_hasCups ? 2 : 0);
         return new FakeHardware(dosesCafé, nombreGobelets, _limiteEnEau);
     }
 
