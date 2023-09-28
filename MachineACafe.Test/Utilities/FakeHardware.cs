@@ -6,9 +6,10 @@ public class FakeHardware : IMachineHardware
 {
     private ushort _stockOfCoffee;
     private ushort _stockOfCups;
-    public ushort CoffeeCounter { get; init; }
+    private bool _allongéDemandé;
+    public ushort CoffeeCounter { get; }
     private MoneyInserted _onMoneyInserted = _ => { };
-    private ButtonPressed _onLongCoffeeButtonsPressed = _ => { };
+    private ButtonPressed _onLongCoffeeButtonPressed = _ => { };
 
     public FakeHardware(ushort stockOfCoffee, ushort stockOfCups, bool hasWater)
     {
@@ -20,6 +21,12 @@ public class FakeHardware : IMachineHardware
     public void SimulerInsertionPièce(Pièce pièce)
     {
         _onMoneyInserted(pièce);
+    }
+
+    public void SimulerAppuiBoutonAllongé()
+    {
+        _allongéDemandé = !_allongéDemandé;
+        _onLongCoffeeButtonPressed(_allongéDemandé);
     }
 
     /// <inheritdoc />
@@ -45,7 +52,6 @@ public class FakeHardware : IMachineHardware
     /// <inheritdoc />
     public void AddOneDoseOfWater()
     {
-        throw new NotImplementedException();
     }
 
     /// <inheritdoc />
@@ -57,6 +63,6 @@ public class FakeHardware : IMachineHardware
     /// <inheritdoc />
     public void RegisterMoreWaterButtonPressed(ButtonPressed callback)
     {
-        throw new NotImplementedException();
+        _onLongCoffeeButtonPressed = callback;
     }
 }

@@ -33,6 +33,7 @@ internal class SpyHardware : IMachineHardware
     /// <inheritdoc />
     public void AddOneDoseOfWater()
     {
+        AddOneDoseOfWaterHasBeenCalled = true;
         _spied.AddOneDoseOfWater();
     }
 
@@ -49,4 +50,5 @@ internal class SpyHardware : IMachineHardware
     }
 
     public bool MakeOneCoffeeHasBeenCalled { get; private set; }
+    public bool AddOneDoseOfWaterHasBeenCalled { get; private set; }
 }

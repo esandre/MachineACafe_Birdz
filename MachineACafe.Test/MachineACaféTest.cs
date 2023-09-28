@@ -25,17 +25,21 @@ public class MachineACaféTest
     public void CasNominal(Pièce pièce)
     {
         // ETANT DONNE une pièce d'une valeur supérieure ou égale à 40cts
-        var hardware = FakeHardwareBuilder.Default;
-        var machine = MachineACaféBuilder.AvecHardware(hardware);
+        var spiedHardware = new FakeHardwareBuilder().Build();
+        var hardwareSpy = new SpyHardware(spiedHardware);
+        var machine = MachineACaféBuilder.AvecHardware(hardwareSpy);
 
         // QUAND la pièce est insérée
-        hardware.SimulerInsertionPièce(pièce);
+        spiedHardware.SimulerInsertionPièce(pièce);
 
         // ALORS le compteur de cafés servis s'incrémente
         Assert.UnCaféEstServi(machine);
 
         // ET la valeur de la pièce est encaissée
         Assert.LeMontantEstEncaissé(machine, pièce);
+
+        // ET aucune dose d'eau supplémentaire n'est demandée
+        Assert.False(hardwareSpy.AddOneDoseOfWaterHasBeenCalled);
     }
 
     [Theory(DisplayName = "Quand on met une somme insuffisante, l'argent est rendu.")]
@@ -93,5 +97,30 @@ public class MachineACaféTest
 
         // ALORS le hardware est bien sollicité pour couler un café
         Assert.True(hardwareSpy.MakeOneCoffeeHasBeenCalled);
+    }
+
+    [Fact (DisplayName ="Quand un café long est demandé et on a au moins deux doses d'eau")]
+    public void DemandeDeCafeLong()
+    { 
+        // ETANT DONNE une pièce d'une valeur supérieure à 40cts
+        var pièce = MachineACafé.SommeMinimale;
+
+        // ET une machine dont le bouton "allongé" est appuyé
+        var spiedHardware = new FakeHardwareBuilder().Build();
+        var hardwareSpy = new SpyHardware(spiedHardware);
+        var machine = MachineACaféBuilder.AvecHardware(hardwareSpy);
+        spiedHardware.SimulerAppuiBoutonAllongé();
+
+        // QUAND la pièce est insérée
+        spiedHardware.SimulerInsertionPièce(pièce);
+
+        // ALORS le compteur de cafés servis s'incrémente
+        Assert.UnCaféEstServi(machine);
+
+        // ET la valeur de la pièce est encaissée
+        Assert.LeMontantEstEncaissé(machine, pièce);
+
+        // ET une dose d'eau supplémentaire est demandée au hardware
+        Assert.True(hardwareSpy.AddOneDoseOfWaterHasBeenCalled);
     }
 }

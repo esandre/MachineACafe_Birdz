@@ -14,10 +14,18 @@ public class MachineACafé : IMachineACafé
     {
         _hardware = hardware;
         hardware.RegisterMoneyInsertedCallback(Insérer);
+        hardware.RegisterMoreWaterButtonPressed(DemanderCaféAllongé);
+    }
+
+    private void DemanderCaféAllongé(bool buttonIsPressed)
+    {
+        CaféAllongéDemandé = buttonIsPressed;
     }
 
     public uint NombreCafésServis { get; private set; }
     public uint SommeEncaisséeEnCentimes { get; private set; }
+
+    private bool CaféAllongéDemandé { get; set; }
 
     private void Insérer(Pièce pièce)
     {
@@ -29,5 +37,8 @@ public class MachineACafé : IMachineACafé
         NombreCafésServis++;
         SommeEncaisséeEnCentimes += pièce.ValeurEnCentimes;
         _hardware.MakeOneCoffee();
+
+        if(CaféAllongéDemandé)
+            _hardware.AddOneDoseOfWater();
     }
 }
