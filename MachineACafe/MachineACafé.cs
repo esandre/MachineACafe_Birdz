@@ -6,6 +6,10 @@ public class MachineACafé : IMachineACafé
 {
     private readonly IMachineHardware _hardware;
 
+    // Devrait être 40cents, mais vu que la machine n'accepte qu'une pièce
+    // pour le moment, c'est 50cts
+    public static readonly Pièce SommeMinimale = Pièce.CinquanteCentimes;
+
     public MachineACafé(IMachineHardware hardware)
     {
         _hardware = hardware;
@@ -17,12 +21,13 @@ public class MachineACafé : IMachineACafé
 
     private void Insérer(Pièce pièce)
     {
-        if (pièce < Pièce.CinquanteCentimes) return;
+        if (pièce < SommeMinimale) return;
         if (!_hardware.HasAtLeastOneVolumeOfWater) return;
         if (!_hardware.HasAtLeastOneCup) return;
         if (!_hardware.HasAtLeastOneMeasureOfCoffee) return;
 
         NombreCafésServis++;
         SommeEncaisséeEnCentimes += pièce.ValeurEnCentimes;
+        _hardware.MakeOneCoffee();
     }
 }

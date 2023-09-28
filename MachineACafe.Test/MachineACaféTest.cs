@@ -64,20 +64,34 @@ public class MachineACaféTest
     {
         // ETANT DONNE une machine manquant d'une ressource
         // ET une pièce d'une valeur suffisante
-        var pièce = Pièce.CinquanteCentimes;
-
         var hardware = new FakeHardwareBuilder()
             .AyantUneRessourceManquante(ressourceManquante)
             .Build();
         var machine = MachineACaféBuilder.AvecHardware(hardware);
 
         // QUAND la pièce est insérée
-        hardware.SimulerInsertionPièce(pièce);
+        hardware.SimulerInsertionPièce(MachineACafé.SommeMinimale);
 
         // ALORS le compteur de cafés servis reste identique
         Assert.AucunCaféNEstServi(machine);
 
         // ET la somme encaissée de même
         Assert.AucunArgentNEstEncaissé(machine);
+    }
+
+    [Fact]
+    public void DemandeAuHardwareUnCafé()
+    {
+        // ETANT DONNE une machine reliée à un hardware
+        // ET une pièce d'une valeur suffisante
+        var spiedHardware = new FakeHardwareBuilder().Build();
+        var hardwareSpy = new SpyHardware(spiedHardware);
+        MachineACaféBuilder.AvecHardware(hardwareSpy);
+
+        // QUAND la pièce est insérée
+        spiedHardware.SimulerInsertionPièce(MachineACafé.SommeMinimale);
+
+        // ALORS le hardware est bien sollicité pour couler un café
+        Assert.True(hardwareSpy.MakeOneCoffeeHasBeenCalled);
     }
 }
