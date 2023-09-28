@@ -6,16 +6,20 @@ public class FakeHardware : IMachineHardware
 {
     private ushort _stockOfCoffee;
     private ushort _stockOfCups;
+    private ushort _dosesOfWater;
+
     private bool _allongéDemandé;
+
     public ushort CoffeeCounter { get; }
+
     private MoneyInserted _onMoneyInserted = _ => { };
     private ButtonPressed _onLongCoffeeButtonPressed = _ => { };
 
-    public FakeHardware(ushort stockOfCoffee, ushort stockOfCups, bool hasWater)
+    public FakeHardware(ushort stockOfCoffee, ushort stockOfCups, ushort dosesOfWater)
     {
         _stockOfCoffee = stockOfCoffee;
         _stockOfCups = stockOfCups;
-        HasAtLeastOneVolumeOfWater = hasWater;
+        _dosesOfWater = dosesOfWater;
     }
 
     public void SimulerInsertionPièce(Pièce pièce)
@@ -30,7 +34,7 @@ public class FakeHardware : IMachineHardware
     }
 
     /// <inheritdoc />
-    public bool HasAtLeastOneVolumeOfWater { get; }
+    public bool HasAtLeastOneVolumeOfWater => _dosesOfWater > 0;
 
     /// <inheritdoc />
     public bool HasAtLeastOneMeasureOfCoffee => _stockOfCoffee > 0;
@@ -47,11 +51,13 @@ public class FakeHardware : IMachineHardware
 
         _stockOfCoffee--;
         _stockOfCups--;
+        _dosesOfWater--;
     }
 
     /// <inheritdoc />
     public void AddOneDoseOfWater()
     {
+        _dosesOfWater--;
     }
 
     /// <inheritdoc />

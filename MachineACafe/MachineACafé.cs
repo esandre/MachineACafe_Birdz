@@ -38,7 +38,7 @@ public class MachineACafé : IMachineACafé
         SommeEncaisséeEnCentimes += pièce.ValeurEnCentimes;
         _hardware.MakeOneCoffee();
 
-        if(CaféAllongéDemandé)
+        if(CaféAllongéDemandé && _hardware.HasAtLeastOneVolumeOfWater)
             _hardware.AddOneDoseOfWater();
     }
 }
