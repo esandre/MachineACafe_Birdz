@@ -9,7 +9,11 @@ public interface IMachineHardware
     bool HasAtLeastOneCup { get; }
 
     void MakeOneCoffee();
+    void AddOneDoseOfWater();
+
     void RegisterMoneyInsertedCallback(MoneyInserted callback);
+    void RegisterMoreWaterButtonPressed(ButtonPressed callback);
 }
 
 public delegate void MoneyInserted(Pièce pièceDétectée);
+public delegate void ButtonPressed(bool newState);

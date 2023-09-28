@@ -11,8 +11,10 @@ public class LowLevelAdapter : IMachineHardware
     [DllImport("MachineType52.dll")] public static extern bool DetectCup();
     [DllImport("MachineType52.dll")] public static extern int MoneyPresent();
     [DllImport("MachineType52.dll")] public static extern int OrderOneCoffee();
+    [DllImport("MachineType52.dll")] public static extern int OrderOneDoseOfWater();
 
     private MoneyInserted _onMoneyInserted = _ => { };
+    private ButtonPressed _onButtonPressed = _ => { };
 
     public void StartPolling(TimeSpan interval, CancellationToken token)
     {
@@ -46,8 +48,21 @@ public class LowLevelAdapter : IMachineHardware
     }
 
     /// <inheritdoc />
+    public void AddOneDoseOfWater()
+    {
+        var result = OrderOneDoseOfWater();
+        if (result != 0) throw new ExternalException("Error while adding water", result);
+    }
+
+    /// <inheritdoc />
     public void RegisterMoneyInsertedCallback(MoneyInserted callback)
     {
         _onMoneyInserted = callback;
+    }
+
+    /// <inheritdoc />
+    public void RegisterMoreWaterButtonPressed(ButtonPressed callback)
+    {
+        _onButtonPressed = callback;
     }
 }

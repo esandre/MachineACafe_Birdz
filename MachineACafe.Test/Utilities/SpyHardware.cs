@@ -31,9 +31,21 @@ internal class SpyHardware : IMachineHardware
     }
 
     /// <inheritdoc />
+    public void AddOneDoseOfWater()
+    {
+        _spied.AddOneDoseOfWater();
+    }
+
+    /// <inheritdoc />
     public void RegisterMoneyInsertedCallback(MoneyInserted callback)
     {
         _spied.RegisterMoneyInsertedCallback(callback);
+    }
+
+    /// <inheritdoc />
+    public void RegisterMoreWaterButtonPressed(ButtonPressed callback)
+    {
+        _spied.RegisterMoreWaterButtonPressed(callback);
     }
 
     public bool MakeOneCoffeeHasBeenCalled { get; private set; }

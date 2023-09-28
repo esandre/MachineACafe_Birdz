@@ -8,6 +8,7 @@ public class FakeHardware : IMachineHardware
     private ushort _stockOfCups;
     public ushort CoffeeCounter { get; init; }
     private MoneyInserted _onMoneyInserted = _ => { };
+    private ButtonPressed _onLongCoffeeButtonsPressed = _ => { };
 
     public FakeHardware(ushort stockOfCoffee, ushort stockOfCups, bool hasWater)
     {
@@ -42,8 +43,20 @@ public class FakeHardware : IMachineHardware
     }
 
     /// <inheritdoc />
+    public void AddOneDoseOfWater()
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
     public void RegisterMoneyInsertedCallback(MoneyInserted callback)
     {
         _onMoneyInserted = callback;
+    }
+
+    /// <inheritdoc />
+    public void RegisterMoreWaterButtonPressed(ButtonPressed callback)
+    {
+        throw new NotImplementedException();
     }
 }
